@@ -2,20 +2,20 @@
 
 QTRSensors qtr;
 
-const uint8_t SensorCount = 8;
-uint16_t sensorValues[SensorCount];
 #define Kp  0.059
 // experiment to determine this, start by something small that just makes your bot follow the line at a slow speed
 #define Ki 0.0
 #define Kd  0.0
-
+#define rightMaxSpeed 200 // max speed of the robot                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+#define leftMaxSpeed 200// max speed of the robot
+#define rightBaseSpeed 150 // this is the speed at which the motors should spin when the robot is perfectly on the line
+#define leftBaseSpeed 150
 int lastError = 0;
-int pos =0;
 int I;
-#define rightMaxSpeed 170 // max speed of the robot                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-#define leftMaxSpeed 150// max speed of the robot
-#define rightBaseSpeed 120 // this is the speed at which the motors should spin when the robot is perfectly on the line
-#define leftBaseSpeed 120
+int pos=0;
+const uint8_t SensorCount =10;
+uint16_t sensorValues[SensorCount];
+
 
 #define rightenable 13 //enableB
 #define leftenable 8 //enableA
@@ -32,21 +32,32 @@ void setup()
   pinMode(leftMotor1, OUTPUT);
   pinMode(leftMotor2, OUTPUT);
   pinMode(leftenable, OUTPUT);
+  pinMode(50, OUTPUT);
+  pinMode(52, OUTPUT);
+  
 
   // configure the sensors
   qtr.setTypeAnalog();
-  qtr.setSensorPins((const uint8_t[]){A0, A1, A2, A3, A4, A5,A6,A7}, SensorCount);
-  qtr.setEmitterPin(2);
+  qtr.setSensorPins((const uint8_t[]){A0, A1, A2, A3, A4, A5,A6,A7,A8,A9}, SensorCount);
+  qtr.setEmitterPin(2); 
 
   delay(500);
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
-  for (uint16_t i = 0; i < 400; i++)
+  digitalWrite(50, HIGH);
+  digitalWrite(52, LOW);
+  for (uint16_t i = 0; i < 200; i++)
   {
+      digitalWrite(rightenable, HIGH);
+      digitalWrite(leftenable, HIGH);// move forward with appropriate speeds
+      analogWrite(rightMotor1, 0);
+      analogWrite(rightMotor2, 150);
+      analogWrite(leftMotor1, 0);
+      analogWrite(leftMotor2, 0);
     qtr.calibrate();
   }
   digitalWrite(LED_BUILTIN, LOW); // turn off Arduino's LED to indicate we are through with calibration
-
+  digitalWrite(50, LOW);
   // print the calibration minimum values measured when emitters were on
   Serial.begin(9600);
   for (uint8_t i = 0; i < SensorCount; i++)
@@ -83,9 +94,9 @@ void loop()
     
   }
   Serial.print('\n');
-  int pos = (4*sensorValues[0]+3*sensorValues[1]+2*sensorValues[2]+sensorValues[3]-sensorValues[4]-2*sensorValues[5]-3*sensorValues[6]-4*sensorValues[7]);
+  int pos = (3*sensorValues[0]+2.5*sensorValues[1]+2*sensorValues[2]+1.5*sensorValues[3]+sensorValues[4]-sensorValues[5]-1.5*sensorValues[6]-2*sensorValues[7]-2.5*sensorValues[8]-3*sensorValues[9]);
   Serial.println(pos);
-    int error = pos + 22;
+  int error = pos + 22;
     I = I + error ;
     int motorSpeed = Kp * error + Kd * (error - lastError) + Ki * (I);
     lastError = error;
@@ -108,9 +119,9 @@ void loop()
       digitalWrite(rightenable, HIGH);
       digitalWrite(leftenable, HIGH);// move forward with appropriate speeds
       analogWrite(rightMotor1, 0);
-      analogWrite(rightMotor2, rightMotorSpeed);
-      analogWrite(leftMotor1, leftMotorSpeed);
-      analogWrite(leftMotor2, 0);
+      analogWrite(rightMotor2, leftMotorSpeed);
+      analogWrite(leftMotor1, 0);
+      analogWrite(leftMotor2, rightMotorSpeed);
     Serial.println(rightMotorSpeed);
     Serial.println(leftMotorSpeed);
 
