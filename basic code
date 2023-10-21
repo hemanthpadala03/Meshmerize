@@ -94,7 +94,7 @@ void loop()
     
   }
   Serial.print('\n');
-  int pos = (3*sensorValues[0]+2.5*sensorValues[1]+2*sensorValues[2]+1.5*sensorValues[3]+sensorValues[4]-sensorValues[5]-1.5*sensorValues[6]-2*sensorValues[7]-2.5*sensorValues[8]-3*sensorValues[9]);
+  int pos = -(3*sensorValues[0]+2.5*sensorValues[1]+2*sensorValues[2]+1.5*sensorValues[3]+sensorValues[4]-sensorValues[5]-1.5*sensorValues[6]-2*sensorValues[7]-2.5*sensorValues[8]-3*sensorValues[9]);
   Serial.println(pos);
   int error = pos + 22;
     I = I + error ;
