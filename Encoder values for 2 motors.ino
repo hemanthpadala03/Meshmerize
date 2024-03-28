@@ -1,3 +1,10 @@
+#define MotFwd1  9 // Motor 1 Forward pin
+#define MotRev1  10 // Motor 1 Reverse pin
+#define MotFwd2  11 // Motor 2 Forward pin
+#define MotRev2  12 // Motor 2 Reverse pin
+#define Enable1  8
+#define Enable2  13
+
 // Define constants for encoder pin numbers
 const int encoderPin1 = 20;
 const int encoderPin2 = 21;
@@ -15,6 +22,12 @@ void updateEncoder();
 void updateEncoder2();
 
 void setup() {
+  pinMode(Enable1, OUTPUT); 
+ pinMode(Enable2, OUTPUT); 
+ pinMode(MotFwd1, OUTPUT); 
+ pinMode(MotRev1, OUTPUT); 
+ pinMode(MotFwd2, OUTPUT); 
+ pinMode(MotRev2, OUTPUT);
   Serial.begin(9600);
 
   // Set encoder pins as inputs and enable pull-up resistors
@@ -31,6 +44,12 @@ void setup() {
 }
 
 void loop() {
+    digitalWrite(Enable1, HIGH); 
+    digitalWrite(Enable2, HIGH); 
+   digitalWrite(MotFwd1, HIGH); 
+   digitalWrite(MotRev1, LOW);
+   digitalWrite(MotFwd2, HIGH); 
+   digitalWrite(MotRev2, LOW);
   // Print encoder values
   Serial.print("Value for left motor ");
   Serial.println(encoderValue);
