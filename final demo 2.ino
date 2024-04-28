@@ -180,6 +180,50 @@ void loop()
       analogWrite(leftMotor2, 0);
       }
     }
+   shortPath()
+}
+void shortPath()
+{
+	int shortDone = 0;
+	if(path[pathLength-3] == 'L' && path[pathLength - 1] == 'R')
+	{
+		pathLength -= 3;
+		path[pathLength] = 'B';
+		shortDone = 1;
+	}
+	if(path[pathLength-3] == 'L' && path[pathLength - 1] == 'S' && shortDone == 0)
+	{
+		pathLength -= 3;
+		path[pathLength] = 'R';
+		shortDone = 1;
+	}
+	if(path[pathLength-3] == 'R' && path[pathLength - 1] == 'L' && shortDone == 0)
+	{
+		pathLength-=3;
+		path[pathLength] = 'B';
+		shortDone=1;
+	}
+	if(path[pathLength-3] == 'S' && path[pathLength - 1] == 'L' && shortDone == 0)
+	{
+		pathLength -= 3;
+		path[pathLength] = 'R';
+		shortDone = 1;
+	}
+	if(path[pathLength-3] == 'S' && path[pathLength - 1] =='S' && shortDone == 0)
+	{
+		pathLength-=3;
+		path[pathLength] = 'B';
+		shortDone=1;
+	}
+	if(path[pathLength-3] == 'L' && path[pathLength - 1] =='L' && shortDone == 0)
+	{
+		pathLength -= 3;
+		path[pathLength] = 'S';
+		shortDone = 1;
+	}
+	path[pathLength+1] = 'D';
+	path[pathLength+2] = 'D';
+	pathLength++;
 }
 void updateEncoder() {
   int MSB1 = digitalRead(encoderPin1);
