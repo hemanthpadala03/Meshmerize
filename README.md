@@ -64,4 +64,4 @@ Contributions to this project are welcome! Please feel free to submit any issues
 
 ## Contact
 
-For questions or inquiries, contact the project owner at `email@example.com`.
+For questions or inquiries, contact the project owner at `hemanth.padala@gmail.com`.
